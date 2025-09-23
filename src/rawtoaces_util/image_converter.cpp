@@ -47,8 +47,6 @@ struct CameraIdentifier
  *
  * @param path The filesystem path to check
  * @param batch Reference to a vector of strings to add valid file paths to
- * @return true if the file was processed (either added to batch or filtered out),
- *         false if the file should be ignored
  */
 void check_and_add_file(
     const std::filesystem::path &path, std::vector<std::string> &batch )
@@ -1441,11 +1439,11 @@ bool ImageConverter::configure(
             return false;
     }
 
-    bool spectral_white_balance =
+    bool is_spectral_white_balance =
         settings.WB_method == Settings::WBMethod::Illuminant;
-    bool spectral_matrix = matrix_method == Settings::MatrixMethod::Spectral;
+    bool is_spectral_matrix = matrix_method == Settings::MatrixMethod::Spectral;
 
-    if ( spectral_white_balance || spectral_matrix )
+    if ( is_spectral_white_balance || is_spectral_matrix )
     {
         if ( !prepare_transform_spectral(
                  image_spec,
@@ -1459,7 +1457,7 @@ bool ImageConverter::configure(
             return false;
         }
 
-        if ( spectral_white_balance )
+        if ( is_spectral_white_balance )
         {
             float custom_WB[4];
 
@@ -1582,9 +1580,9 @@ bool ImageConverter::configure(
 
         if ( settings.crop_box[2] > 0 && settings.crop_box[3] > 0 )
         {
-            std::cerr << "  Crop box: [" << settings.crop_box[0] << ", "
-                      << settings.crop_box[1] << ", " << settings.crop_box[2]
-                      << ", " << settings.crop_box[3] << "]" << std::endl;
+            std::cerr << "  Crop box: ["
+                      << OIIO::Strutil::join( settings.crop_box, ", " ) << "]"
+                      << std::endl;
         }
 
         std::cerr << "  Demosaic: " << settings.demosaic_algorithm << std::endl;
