@@ -2,8 +2,9 @@
 
 set -ex
 
+vcpkg x-update-baseline \
+    --add-initial-baseline \
+    --x-manifest-root="./build_scripts"
 vcpkg install \
-    ceres:x64-windows \
-    nlohmann-json:x64-windows \
-    openimageio:x64-windows \
-    nanobind:x64-windows
+    --x-install-root="C:/vcpkg/installed" \
+    --x-manifest-root="./build_scripts"
