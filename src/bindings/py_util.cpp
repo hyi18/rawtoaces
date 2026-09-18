@@ -166,6 +166,21 @@ void util_bindings( nanobind::module_ &m )
         
         :return: List containing camera model names.
         )""" );
+    image_converter.def(
+        "apply_lens_correction", &ImageConverter::apply_lens_correction, 
+        nanobind::arg("dst"),
+        nanobind::arg("src"),
+        R"""(
+        Apply the lens correction to the image buffer.
+        
+        :param dst: Destination image buffer
+        :type OIIO::ImageBuf
+
+        :param src: Source image buffer, can be the same as ``dst`` for in-place conversion.
+        :type OIIO::ImageBuf
+
+        :return: ``True`` if applied successfully.
+        )""" );
 
     nanobind::class_<ImageConverter::Settings> settings(
         image_converter, "Settings", R"""(
